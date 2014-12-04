@@ -1,0 +1,443 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		180838E21A30899100F05022 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180838E11A30899100F05022 /* AppDelegate.swift */; };
+		180838E51A30899100F05022 /* Kahuna.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 180838E31A30899100F05022 /* Kahuna.xcdatamodeld */; };
+		180838E71A30899100F05022 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180838E61A30899100F05022 /* MasterViewController.swift */; };
+		180838E91A30899100F05022 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180838E81A30899100F05022 /* DetailViewController.swift */; };
+		180838EC1A30899100F05022 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 180838EA1A30899100F05022 /* Main.storyboard */; };
+		180838EE1A30899100F05022 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 180838ED1A30899100F05022 /* Images.xcassets */; };
+		180838F11A30899100F05022 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 180838EF1A30899100F05022 /* LaunchScreen.xib */; };
+		180838FD1A30899100F05022 /* KahunaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180838FC1A30899100F05022 /* KahunaTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		180838F71A30899100F05022 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 180838D41A30899100F05022 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 180838DB1A30899100F05022;
+			remoteInfo = Kahuna;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		180838DC1A30899100F05022 /* Kahuna.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kahuna.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		180838E01A30899100F05022 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		180838E11A30899100F05022 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		180838E41A30899100F05022 /* Kahuna.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Kahuna.xcdatamodel; sourceTree = "<group>"; };
+		180838E61A30899100F05022 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		180838E81A30899100F05022 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		180838EB1A30899100F05022 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		180838ED1A30899100F05022 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		180838F01A30899100F05022 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		180838F61A30899100F05022 /* KahunaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KahunaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		180838FB1A30899100F05022 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		180838FC1A30899100F05022 /* KahunaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KahunaTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		180838D91A30899100F05022 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		180838F31A30899100F05022 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		180838D31A30899100F05022 = {
+			isa = PBXGroup;
+			children = (
+				180838DE1A30899100F05022 /* Kahuna */,
+				180838F91A30899100F05022 /* KahunaTests */,
+				180838DD1A30899100F05022 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		180838DD1A30899100F05022 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				180838DC1A30899100F05022 /* Kahuna.app */,
+				180838F61A30899100F05022 /* KahunaTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		180838DE1A30899100F05022 /* Kahuna */ = {
+			isa = PBXGroup;
+			children = (
+				180838E11A30899100F05022 /* AppDelegate.swift */,
+				180838E61A30899100F05022 /* MasterViewController.swift */,
+				180838E81A30899100F05022 /* DetailViewController.swift */,
+				180838EA1A30899100F05022 /* Main.storyboard */,
+				180838ED1A30899100F05022 /* Images.xcassets */,
+				180838EF1A30899100F05022 /* LaunchScreen.xib */,
+				180838E31A30899100F05022 /* Kahuna.xcdatamodeld */,
+				180838DF1A30899100F05022 /* Supporting Files */,
+			);
+			path = Kahuna;
+			sourceTree = "<group>";
+		};
+		180838DF1A30899100F05022 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				180838E01A30899100F05022 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		180838F91A30899100F05022 /* KahunaTests */ = {
+			isa = PBXGroup;
+			children = (
+				180838FC1A30899100F05022 /* KahunaTests.swift */,
+				180838FA1A30899100F05022 /* Supporting Files */,
+			);
+			path = KahunaTests;
+			sourceTree = "<group>";
+		};
+		180838FA1A30899100F05022 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				180838FB1A30899100F05022 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		180838DB1A30899100F05022 /* Kahuna */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 180839001A30899100F05022 /* Build configuration list for PBXNativeTarget "Kahuna" */;
+			buildPhases = (
+				180838D81A30899100F05022 /* Sources */,
+				180838D91A30899100F05022 /* Frameworks */,
+				180838DA1A30899100F05022 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Kahuna;
+			productName = Kahuna;
+			productReference = 180838DC1A30899100F05022 /* Kahuna.app */;
+			productType = "com.apple.product-type.application";
+		};
+		180838F51A30899100F05022 /* KahunaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 180839031A30899100F05022 /* Build configuration list for PBXNativeTarget "KahunaTests" */;
+			buildPhases = (
+				180838F21A30899100F05022 /* Sources */,
+				180838F31A30899100F05022 /* Frameworks */,
+				180838F41A30899100F05022 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				180838F81A30899100F05022 /* PBXTargetDependency */,
+			);
+			name = KahunaTests;
+			productName = KahunaTests;
+			productReference = 180838F61A30899100F05022 /* KahunaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		180838D41A30899100F05022 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Vid Tadel";
+				TargetAttributes = {
+					180838DB1A30899100F05022 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					180838F51A30899100F05022 = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = 180838DB1A30899100F05022;
+					};
+				};
+			};
+			buildConfigurationList = 180838D71A30899100F05022 /* Build configuration list for PBXProject "Kahuna" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 180838D31A30899100F05022;
+			productRefGroup = 180838DD1A30899100F05022 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				180838DB1A30899100F05022 /* Kahuna */,
+				180838F51A30899100F05022 /* KahunaTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		180838DA1A30899100F05022 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				180838EC1A30899100F05022 /* Main.storyboard in Resources */,
+				180838F11A30899100F05022 /* LaunchScreen.xib in Resources */,
+				180838EE1A30899100F05022 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		180838F41A30899100F05022 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		180838D81A30899100F05022 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				180838E21A30899100F05022 /* AppDelegate.swift in Sources */,
+				180838E51A30899100F05022 /* Kahuna.xcdatamodeld in Sources */,
+				180838E71A30899100F05022 /* MasterViewController.swift in Sources */,
+				180838E91A30899100F05022 /* DetailViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		180838F21A30899100F05022 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				180838FD1A30899100F05022 /* KahunaTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		180838F81A30899100F05022 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 180838DB1A30899100F05022 /* Kahuna */;
+			targetProxy = 180838F71A30899100F05022 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		180838EA1A30899100F05022 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				180838EB1A30899100F05022 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		180838EF1A30899100F05022 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				180838F01A30899100F05022 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		180838FE1A30899100F05022 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		180838FF1A30899100F05022 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		180839011A30899100F05022 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Kahuna/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		180839021A30899100F05022 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Kahuna/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		180839041A30899100F05022 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = KahunaTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kahuna.app/Kahuna";
+			};
+			name = Debug;
+		};
+		180839051A30899100F05022 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = KahunaTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kahuna.app/Kahuna";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		180838D71A30899100F05022 /* Build configuration list for PBXProject "Kahuna" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				180838FE1A30899100F05022 /* Debug */,
+				180838FF1A30899100F05022 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		180839001A30899100F05022 /* Build configuration list for PBXNativeTarget "Kahuna" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				180839011A30899100F05022 /* Debug */,
+				180839021A30899100F05022 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		180839031A30899100F05022 /* Build configuration list for PBXNativeTarget "KahunaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				180839041A30899100F05022 /* Debug */,
+				180839051A30899100F05022 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		180838E31A30899100F05022 /* Kahuna.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				180838E41A30899100F05022 /* Kahuna.xcdatamodel */,
+			);
+			currentVersion = 180838E41A30899100F05022 /* Kahuna.xcdatamodel */;
+			path = Kahuna.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 180838D41A30899100F05022 /* Project object */;
+}
