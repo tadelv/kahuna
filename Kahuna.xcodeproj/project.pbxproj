@@ -15,6 +15,12 @@
 		180838EE1A30899100F05022 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 180838ED1A30899100F05022 /* Images.xcassets */; };
 		180838F11A30899100F05022 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 180838EF1A30899100F05022 /* LaunchScreen.xib */; };
 		180838FD1A30899100F05022 /* KahunaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180838FC1A30899100F05022 /* KahunaTests.swift */; };
+		1808391C1A308E8900F05022 /* Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1808391B1A308E8900F05022 /* Member.swift */; };
+		1808391E1A308E8900F05022 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1808391D1A308E8900F05022 /* Group.swift */; };
+		180839201A308E8900F05022 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1808391F1A308E8900F05022 /* Event.swift */; };
+		180839221A30953800F05022 /* GroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180839211A30953800F05022 /* GroupDetailViewController.swift */; };
+		180839541A30AC2A00F05022 /* AddUserTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180839531A30AC2A00F05022 /* AddUserTableViewController.swift */; };
+		180839561A30B78F00F05022 /* PaymentsHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180839551A30B78F00F05022 /* PaymentsHistoryViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +46,12 @@
 		180838F61A30899100F05022 /* KahunaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KahunaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		180838FB1A30899100F05022 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		180838FC1A30899100F05022 /* KahunaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KahunaTests.swift; sourceTree = "<group>"; };
+		1808391B1A308E8900F05022 /* Member.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Member.swift; sourceTree = "<group>"; };
+		1808391D1A308E8900F05022 /* Group.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		1808391F1A308E8900F05022 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		180839211A30953800F05022 /* GroupDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupDetailViewController.swift; sourceTree = "<group>"; };
+		180839531A30AC2A00F05022 /* AddUserTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddUserTableViewController.swift; sourceTree = "<group>"; };
+		180839551A30B78F00F05022 /* PaymentsHistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentsHistoryViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,11 +95,17 @@
 			children = (
 				180838E11A30899100F05022 /* AppDelegate.swift */,
 				180838E61A30899100F05022 /* MasterViewController.swift */,
+				180839531A30AC2A00F05022 /* AddUserTableViewController.swift */,
+				180839211A30953800F05022 /* GroupDetailViewController.swift */,
+				180839551A30B78F00F05022 /* PaymentsHistoryViewController.swift */,
 				180838E81A30899100F05022 /* DetailViewController.swift */,
 				180838EA1A30899100F05022 /* Main.storyboard */,
 				180838ED1A30899100F05022 /* Images.xcassets */,
 				180838EF1A30899100F05022 /* LaunchScreen.xib */,
 				180838E31A30899100F05022 /* Kahuna.xcdatamodeld */,
+				1808391F1A308E8900F05022 /* Event.swift */,
+				1808391D1A308E8900F05022 /* Group.swift */,
+				1808391B1A308E8900F05022 /* Member.swift */,
 				180838DF1A30899100F05022 /* Supporting Files */,
 			);
 			path = Kahuna;
@@ -167,6 +185,7 @@
 				TargetAttributes = {
 					180838DB1A30899100F05022 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = NU69GFCTNN;
 					};
 					180838F51A30899100F05022 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -219,9 +238,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				180838E21A30899100F05022 /* AppDelegate.swift in Sources */,
+				180839541A30AC2A00F05022 /* AddUserTableViewController.swift in Sources */,
+				180839221A30953800F05022 /* GroupDetailViewController.swift in Sources */,
 				180838E51A30899100F05022 /* Kahuna.xcdatamodeld in Sources */,
 				180838E71A30899100F05022 /* MasterViewController.swift in Sources */,
+				1808391E1A308E8900F05022 /* Group.swift in Sources */,
+				180839561A30B78F00F05022 /* PaymentsHistoryViewController.swift in Sources */,
 				180838E91A30899100F05022 /* DetailViewController.swift in Sources */,
+				180839201A308E8900F05022 /* Event.swift in Sources */,
+				1808391C1A308E8900F05022 /* Member.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,9 +371,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Kahuna/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -356,9 +387,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Kahuna/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
 			};
 			name = Release;
 		};
