@@ -4,7 +4,7 @@
         <attribute name="timeStamp" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>
-        <relationship name="member" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Member" syncable="YES"/>
+        <relationship name="member" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Member" inverseName="payments" inverseEntity="Member" syncable="YES"/>
         <userInfo/>
     </entity>
     <entity name="Group" representedClassName="Kahuna.Group" syncable="YES">
@@ -14,10 +14,11 @@
     </entity>
     <entity name="Member" representedClassName="Kahuna.Member" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="payments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="member" inverseEntity="Event" syncable="YES"/>
     </entity>
     <elements>
         <element name="Event" positionX="261" positionY="189" width="128" height="73"/>
         <element name="Group" positionX="-101" positionY="99" width="128" height="88"/>
-        <element name="Member" positionX="36" positionY="405" width="128" height="58"/>
+        <element name="Member" positionX="36" positionY="405" width="128" height="73"/>
     </elements>
 </model>
