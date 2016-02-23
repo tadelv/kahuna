@@ -54,7 +54,6 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 
 	func addMemberToGroup(newMember: Member) {
 		self.dismissViewControllerAnimated(true, completion: nil)
-		let context = self.fetchedResultsController.managedObjectContext
 
 		// If appropriate, configure the new managed object.
 		if let group = detailItem {
@@ -71,35 +70,29 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 			}
 		}
 
-		// Save the context.
-		var error: NSError? = nil
-		if !context.save(&error) {
-			// Replace this implementation with code to handle the error appropriately.
-			// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-			//println("Unresolved error \(error), \(error.userInfo)")
-			abort()
-		}
+		let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+		delegate.saveContext()
 	}
 
 	// MARK: - Segues
 
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier == "showDetail" {
-			if let indexPath = self.tableView.indexPathForSelectedRow() {
-				let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as Group
-				let controller = (segue.destinationViewController as UINavigationController).topViewController as DetailViewController
+			if let indexPath = self.tableView.indexPathForSelectedRow {
+				let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Group
+				let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
 				controller.detailItem = object
 				controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
 				controller.navigationItem.leftItemsSupplementBackButton = true
 			}
 		}
 		if segue.identifier == "addMember" {
-			let controller = (segue.destinationViewController as UINavigationController).topViewController as AddUserTableViewController
+			let controller = (segue.destinationViewController as! UINavigationController).topViewController as! AddUserTableViewController
 			controller.managedObjectContext = self.managedObjectContext
 			controller.delegate = self
 		}
 		if segue.identifier == "showHistory" {
-			let controller = segue.destinationViewController as PaymentsHistoryViewController
+			let controller = segue.destinationViewController as! PaymentsHistoryViewController
 			controller.managedObjectContext = self.managedObjectContext
 			controller.detailItem = self.detailItem
 		}
@@ -108,18 +101,13 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 	func incrementPaymentCountForIndexPath(indexPath : NSIndexPath) {
 		if let object = self.detailItem?.getMembers()[indexPath.row] {
 			let context = self.fetchedResultsController.managedObjectContext
-			let newEvent = NSEntityDescription.insertNewObjectForEntityForName("Event", inManagedObjectContext: context) as Event
+			let newEvent = NSEntityDescription.insertNewObjectForEntityForName("Event", inManagedObjectContext: context) as! Event
 			newEvent.member = object
 			newEvent.timeStamp = NSDate()
 			self.detailItem!.addPayment(newEvent)
 			// Save the context.
-			var error: NSError? = nil
-			if !context.save(&error) {
-				// Replace this implementation with code to handle the error appropriately.
-				// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-				//println("Unresolved error \(error), \(error.userInfo)")
-				abort()
-			}
+			let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+			delegate.saveContext()
 		}
 	}
 
@@ -150,15 +138,10 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
 		if editingStyle == .Delete {
 			let context = self.fetchedResultsController.managedObjectContext
-			context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as NSManagedObject)
+			context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
 
-			var error: NSError? = nil
-			if !context.save(&error) {
-				// Replace this implementation with code to handle the error appropriately.
-				// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-				//println("Unresolved error \(error), \(error.userInfo)")
-				abort()
-			}
+			let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+			delegate.saveContext()
 		}
 	}
 
@@ -200,7 +183,6 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 
 		// Edit the sort key as appropriate.
 		let sortDescriptor = NSSortDescriptor(key: "name", ascending: false)
-		let sortDescriptors = [sortDescriptor]
 
 		fetchRequest.sortDescriptors = [sortDescriptor]
 
@@ -210,11 +192,9 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 		aFetchedResultsController.delegate = self
 		_fetchedResultsController = aFetchedResultsController
 
-		var error: NSError? = nil
-		if !_fetchedResultsController!.performFetch(&error) {
-			// Replace this implementation with code to handle the error appropriately.
-			// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-			//println("Unresolved error \(error), \(error.userInfo)")
+		do {
+			try _fetchedResultsController!.performFetch()
+		} catch _ as NSError {
 			abort()
 		}
 
@@ -241,15 +221,17 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 		switch type {
 		case .Insert:
 			tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+			break
 		case .Delete:
 			tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+			break
 		case .Update:
 			self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
+			break
 		case .Move:
 			tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
 			tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-		default:
-			return
+			break
 		}
 	}
 

@@ -56,7 +56,7 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 			textField.placeholder = "Group member"
 		}
 		alertController.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { action in
-			let textField = alertController.textFields?.first as UITextField
+			let textField = alertController.textFields?.first as UITextField!
 			self.insertMemberWithName(textField.text)
 		}))
 		alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { action in
@@ -69,19 +69,14 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 		//TODO: check uniqueness
 		let context = self.fetchedResultsController.managedObjectContext
 		let entity = self.fetchedResultsController.fetchRequest.entity!
-		let newManagedObject = NSEntityDescription.insertNewObjectForEntityForName(entity.name!, inManagedObjectContext: context) as Member
+		let newManagedObject = NSEntityDescription.insertNewObjectForEntityForName(entity.name!, inManagedObjectContext: context) as! Member
 
 		// If appropriate, configure the new managed object.
 		newManagedObject.name = newName
 
-		// Save the context.
-		var error: NSError? = nil
-		if !context.save(&error) {
-			// Replace this implementation with code to handle the error appropriately.
-			// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-			//println("Unresolved error \(error), \(error.userInfo)")
-			abort()
-		}
+		// Save
+		let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+		delegate.saveContext()
 	}
 
 	// MARK: - Segues
@@ -115,25 +110,21 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
 		if editingStyle == .Delete {
 			let context = self.fetchedResultsController.managedObjectContext
-			context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as NSManagedObject)
+			context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
 
-			var error: NSError? = nil
-			if !context.save(&error) {
-				// Replace this implementation with code to handle the error appropriately.
-				// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-				//println("Unresolved error \(error), \(error.userInfo)")
-				abort()
-			}
+			// Save
+			let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+			delegate.saveContext()
 		}
 	}
 
 	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let member = self.fetchedResultsController.objectAtIndexPath(indexPath) as Member
+		let member = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Member
 		self.delegate?.addMemberToGroup(member)
 	}
 
 	func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-		let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as Member
+		let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Member
 		cell.textLabel!.text = object.name
 	}
 
@@ -154,7 +145,6 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 
 		// Edit the sort key as appropriate.
 		let sortDescriptor = NSSortDescriptor(key: "name", ascending: false)
-		let sortDescriptors = [sortDescriptor]
 
 		fetchRequest.sortDescriptors = [sortDescriptor]
 
@@ -164,8 +154,9 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 		aFetchedResultsController.delegate = self
 		_fetchedResultsController = aFetchedResultsController
 
-		var error: NSError? = nil
-		if !_fetchedResultsController!.performFetch(&error) {
+		do {
+			try _fetchedResultsController!.performFetch()
+		} catch _ as NSError {
 			// Replace this implementation with code to handle the error appropriately.
 			// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
 			//println("Unresolved error \(error), \(error.userInfo)")
@@ -195,15 +186,16 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 		switch type {
 		case .Insert:
 			tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+			break
 		case .Delete:
 			tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+			break
 		case .Update:
 			self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
+			break
 		case .Move:
 			tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
 			tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-		default:
-			return
 		}
 	}
 

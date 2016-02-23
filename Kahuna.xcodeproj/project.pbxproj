@@ -180,12 +180,13 @@
 		180838D41A30899100F05022 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Vid Tadel";
 				TargetAttributes = {
 					180838DB1A30899100F05022 = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = NU69GFCTNN;
+						DevelopmentTeam = 83EHXXK8W9;
 					};
 					180838F51A30899100F05022 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -451,6 +452,7 @@
 				180839021A30899100F05022 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		180839031A30899100F05022 /* Build configuration list for PBXNativeTarget "KahunaTests" */ = {
 			isa = XCConfigurationList;
@@ -459,6 +461,7 @@
 				180839051A30899100F05022 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

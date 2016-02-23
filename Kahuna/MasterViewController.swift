@@ -32,7 +32,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 		self.navigationItem.rightBarButtonItem = addButton
 		if let split = self.splitViewController {
 		    let controllers = split.viewControllers
-		    self.detailViewController = controllers[controllers.count-1].topViewController as? GroupDetailViewController
+			print("I have \(controllers)")
+//		    self.detailViewController = controllers[controllers.count-1].topViewController as! GroupDetailViewController
 		}
 	}
 
@@ -49,27 +50,27 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 		alertController.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { action in
 			switch action.style{
 			case .Default:
-				let textField = alertController.textFields?.first as UITextField
+				let textField = alertController.textFields?.first as UITextField!
 				self.insertGroupWithName(textField.text)
 
 			case .Cancel:
-				println("cancel")
+				print("cancel")
 
 			case .Destructive:
-				println("destructive")
+				print("destructive")
 			}
 		}))
 		alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { action in
 			switch action.style{
 			case .Default:
-				let textField = alertController.textFields?.first as UITextField
+				let textField = alertController.textFields?.first as UITextField!
 				self.insertGroupWithName(textField.text)
-
+				break
 			case .Cancel:
-				println("cancel")
-
+				print("cancel")
+				break
 			case .Destructive:
-				println("destructive")
+				print("destructive")
 			}
 		}))
 		self.presentViewController(alertController, animated: true) { () -> Void in
@@ -79,28 +80,21 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 	func insertGroupWithName(newName: String!) {
 		let context = self.fetchedResultsController.managedObjectContext
 		let entity = self.fetchedResultsController.fetchRequest.entity!
-		let newManagedObject = NSEntityDescription.insertNewObjectForEntityForName(entity.name!, inManagedObjectContext: context) as Group
+		let newManagedObject = NSEntityDescription.insertNewObjectForEntityForName(entity.name!, inManagedObjectContext: context) as! Group
 
 		// If appropriate, configure the new managed object.
 		newManagedObject.name = newName
-
-		// Save the context.
-		var error: NSError? = nil
-		if !context.save(&error) {
-			// Replace this implementation with code to handle the error appropriately.
-			// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-			//println("Unresolved error \(error), \(error.userInfo)")
-			abort()
-		}
+		let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+		delegate.saveContext()
 	}
 
 	// MARK: - Segues
 
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier == "showDetail" {
-		    if let indexPath = self.tableView.indexPathForSelectedRow() {
-		    let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as Group
-		        let controller = segue.destinationViewController as GroupDetailViewController
+		    if let indexPath = self.tableView.indexPathForSelectedRow {
+		    let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Group
+		        let controller = segue.destinationViewController as! GroupDetailViewController
 		        controller.detailItem = object
 		        controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
 		        controller.navigationItem.leftItemsSupplementBackButton = true
@@ -134,20 +128,16 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
 		if editingStyle == .Delete {
 		    let context = self.fetchedResultsController.managedObjectContext
-		    context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as NSManagedObject)
-		        
-		    var error: NSError? = nil
-		    if !context.save(&error) {
-		        // Replace this implementation with code to handle the error appropriately.
-		        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-		        //println("Unresolved error \(error), \(error.userInfo)")
-		        abort()
-		    }
+		    context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
+
+			let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+			delegate.saveContext()
+
 		}
 	}
 
 	func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-		let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as Group
+		let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Group
 		cell.textLabel!.text = object.name
 	}
 
@@ -168,7 +158,6 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 	    
 	    // Edit the sort key as appropriate.
 	    let sortDescriptor = NSSortDescriptor(key: "name", ascending: false)
-	    let sortDescriptors = [sortDescriptor]
 	    
 	    fetchRequest.sortDescriptors = [sortDescriptor]
 	    
@@ -177,9 +166,10 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 	    let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: "Master")
 	    aFetchedResultsController.delegate = self
 	    _fetchedResultsController = aFetchedResultsController
-	    
-		var error: NSError? = nil
-		if !_fetchedResultsController!.performFetch(&error) {
+
+		do {
+			try _fetchedResultsController!.performFetch()
+		} catch _ as NSError {
 		     // Replace this implementation with code to handle the error appropriately.
 		     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
 	         //println("Unresolved error \(error), \(error.userInfo)")
@@ -209,15 +199,16 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 	    switch type {
 	        case .Insert:
 	            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+			break
 	        case .Delete:
 	            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+			break
 	        case .Update:
 	            self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
+			break
 	        case .Move:
 	            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
 	            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-	        default:
-	            return
 	    }
 	}
 

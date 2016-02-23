@@ -20,7 +20,7 @@ class Group: NSManagedObject {
 extension Group {
 
 	func addMember(newMember:Member) {
-		var teamz = self.mutableSetValueForKey("members")
+		let teamz = self.mutableSetValueForKey("members")
 		teamz.addObject(newMember)
 	}
 
@@ -30,17 +30,17 @@ extension Group {
 
 	func getMembers() -> [Member] {
 		var tmpsak: [Member]
-		tmpsak = self.members.allObjects as [Member]
+		tmpsak = self.members.allObjects as! [Member]
 		return tmpsak
 	}
 
 	func addPayment(newPayment:Event) {
-		var teamz = self.mutableSetValueForKey("payments")
+		let teamz = self.mutableSetValueForKey("payments")
 		teamz.addObject(newPayment)
 	}
 
 	func removePayment(payment: Event) {
-		var teamz = self.mutableSetValueForKey("payments")
+		let teamz = self.mutableSetValueForKey("payments")
 		teamz.removeObject(payment)
 	}
 
@@ -50,7 +50,7 @@ extension Group {
 
 	func getPayments() -> [Event] {
 		var tmpsak: [Event]
-		tmpsak = self.payments.allObjects as [Event]
+		tmpsak = self.payments.allObjects as! [Event]
 		return tmpsak
 	}
 
