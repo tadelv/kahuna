@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 protocol AddUserControllerDelegate {
-	func addMemberToGroup(newMember: Member)
+	func addMemberToGroup(_ newMember: Member)
 }
 
 class AddUserTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
@@ -21,7 +21,7 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+		if UIDevice.current().userInterfaceIdiom == .pad {
 			self.clearsSelectionOnViewWillAppear = false
 			self.preferredContentSize = CGSize(width: 320.0, height: 600.0)
 		}
@@ -30,10 +30,10 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
-		let cancelButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "dismiss:")
+		let cancelButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: "dismiss:")
 		self.navigationItem.leftBarButtonItem = cancelButtonItem
 
-		let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
+		let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: "insertNewObject:")
 		self.navigationItem.rightBarButtonItem = addButton
 	}
 
@@ -41,8 +41,8 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 
 	}
 
-	func dismiss(sender: AnyObject) {
-		self.dismissViewControllerAnimated(true, completion: nil)
+	func dismiss(_ sender: AnyObject) {
+		self.dismiss(animated: true, completion: nil)
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -50,81 +50,81 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 		// Dispose of any resources that can be recreated.
 	}
 
-	func insertNewObject(sender: AnyObject) {
-		let alertController = UIAlertController(title: "New", message: "", preferredStyle: UIAlertControllerStyle.Alert)
-		alertController.addTextFieldWithConfigurationHandler {(textField: UITextField!) in
+	func insertNewObject(_ sender: AnyObject) {
+		let alertController = UIAlertController(title: "New", message: "", preferredStyle: UIAlertControllerStyle.alert)
+		alertController.addTextField {(textField: UITextField!) in
 			textField.placeholder = "Group member"
 		}
-		alertController.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { action in
+		alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
 			let textField = alertController.textFields?.first as UITextField!
 			self.insertMemberWithName(textField.text)
 		}))
-		alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { action in
+		alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
 		}))
-		self.presentViewController(alertController, animated: true) { () -> Void in
+		self.present(alertController, animated: true) { () -> Void in
 		}
 	}
 
-	func insertMemberWithName(newName: String!) {
+	func insertMemberWithName(_ newName: String!) {
 		//TODO: check uniqueness
 		let context = self.fetchedResultsController.managedObjectContext
 		let entity = self.fetchedResultsController.fetchRequest.entity!
-		let newManagedObject = NSEntityDescription.insertNewObjectForEntityForName(entity.name!, inManagedObjectContext: context) as! Member
+		let newManagedObject = NSEntityDescription.insertNewObject(forEntityName: entity.name!, into: context) as! Member
 
 		// If appropriate, configure the new managed object.
 		newManagedObject.name = newName
 
 		// Save
-		let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+		let delegate = UIApplication.shared().delegate as! AppDelegate
 		delegate.saveContext()
 	}
 
 	// MARK: - Segues
 
-	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 
 	}
 
 	// MARK: - Table View
 
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return self.fetchedResultsController.sections?.count ?? 0
 	}
 
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		let sectionInfo = self.fetchedResultsController.sections![section] as NSFetchedResultsSectionInfo
 		return sectionInfo.numberOfObjects
 	}
 
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as UITableViewCell
 		self.configureCell(cell, atIndexPath: indexPath)
 		return cell
 	}
 
-	override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 		// Return false if you do not want the specified item to be editable.
 		return false//true
 	}
 
-	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-		if editingStyle == .Delete {
+	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+		if editingStyle == .delete {
 			let context = self.fetchedResultsController.managedObjectContext
-			context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
+			context.delete(self.fetchedResultsController.object(at: indexPath) as! NSManagedObject)
 
 			// Save
-			let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+			let delegate = UIApplication.shared().delegate as! AppDelegate
 			delegate.saveContext()
 		}
 	}
 
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let member = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Member
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		let member = self.fetchedResultsController.object(at: indexPath) as! Member
 		self.delegate?.addMemberToGroup(member)
 	}
 
-	func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-		let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Member
+	func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
+		let object = self.fetchedResultsController.object(at: indexPath) as! Member
 		cell.textLabel!.text = object.name
 	}
 
@@ -137,14 +137,14 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 
 		let fetchRequest = NSFetchRequest()
 		// Edit the entity name as appropriate.
-		let entity = NSEntityDescription.entityForName("Member", inManagedObjectContext: self.managedObjectContext!)
+		let entity = NSEntityDescription.entity(forEntityName: "Member", in: self.managedObjectContext!)
 		fetchRequest.entity = entity
 
 		// Set the batch size to a suitable number.
 		fetchRequest.fetchBatchSize = 20
 
 		// Edit the sort key as appropriate.
-		let sortDescriptor = NSSortDescriptor(key: "name", ascending: false)
+		let sortDescriptor = SortDescriptor(key: "name", ascending: false)
 
 		fetchRequest.sortDescriptors = [sortDescriptor]
 
@@ -167,39 +167,39 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 	}
 	var _fetchedResultsController: NSFetchedResultsController? = nil
 
-	func controllerWillChangeContent(controller: NSFetchedResultsController) {
+	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		self.tableView.beginUpdates()
 	}
 
-	func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
 		switch type {
-		case .Insert:
-			self.tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-		case .Delete:
-			self.tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+		case .insert:
+			self.tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+		case .delete:
+			self.tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
 		default:
 			return
 		}
 	}
 
-	func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: AnyObject, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
 		switch type {
-		case .Insert:
-			tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+		case .insert:
+			tableView.insertRows(at: [newIndexPath!], with: .fade)
 			break
-		case .Delete:
-			tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+		case .delete:
+			tableView.deleteRows(at: [indexPath!], with: .fade)
 			break
-		case .Update:
-			self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
+		case .update:
+			self.configureCell(tableView.cellForRow(at: indexPath!)!, atIndexPath: indexPath!)
 			break
-		case .Move:
-			tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-			tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+		case .move:
+			tableView.deleteRows(at: [indexPath!], with: .fade)
+			tableView.insertRows(at: [newIndexPath!], with: .fade)
 		}
 	}
 
-	func controllerDidChangeContent(controller: NSFetchedResultsController) {
+	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		self.tableView.endUpdates()
 	}
 

@@ -19,9 +19,9 @@ class Group: NSManagedObject {
 
 extension Group {
 
-	func addMember(newMember:Member) {
-		let teamz = self.mutableSetValueForKey("members")
-		teamz.addObject(newMember)
+	func addMember(_ newMember:Member) {
+		let teamz = self.mutableSetValue(forKey: "members")
+		teamz.add(newMember)
 	}
 
 	func getNumberOfMembers() -> Int {
@@ -34,14 +34,14 @@ extension Group {
 		return tmpsak
 	}
 
-	func addPayment(newPayment:Event) {
-		let teamz = self.mutableSetValueForKey("payments")
-		teamz.addObject(newPayment)
+	func addPayment(_ newPayment:Event) {
+		let teamz = self.mutableSetValue(forKey: "payments")
+		teamz.add(newPayment)
 	}
 
-	func removePayment(payment: Event) {
-		let teamz = self.mutableSetValueForKey("payments")
-		teamz.removeObject(payment)
+	func removePayment(_ payment: Event) {
+		let teamz = self.mutableSetValue(forKey: "payments")
+		teamz.remove(payment)
 	}
 
 	func getNumberOfPayments() -> Int {

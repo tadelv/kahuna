@@ -22,7 +22,7 @@ class PaymentsHistoryViewController: UITableViewController, NSFetchedResultsCont
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+		if UIDevice.current().userInterfaceIdiom == .pad {
 			self.clearsSelectionOnViewWillAppear = false
 			self.preferredContentSize = CGSize(width: 320.0, height: 600.0)
 		}
@@ -45,32 +45,32 @@ class PaymentsHistoryViewController: UITableViewController, NSFetchedResultsCont
 
 	// MARK: - Table View
 
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
 
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return self.detailItem?.getNumberOfPayments() ?? 0
 	}
 
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as UITableViewCell
 		self.configureCell(cell, atIndexPath: indexPath)
 		return cell
 	}
 
-	override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 		// Return false if you do not want the specified item to be editable.
 		return true
 	}
 
-	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-		if editingStyle == .Delete {
-			if let elementToRemove = self.detailItem?.getPayments()[indexPath.row] {
+	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+		if editingStyle == .delete {
+			if let elementToRemove = self.detailItem?.getPayments()[(indexPath as NSIndexPath).row] {
 				self.detailItem?.removePayment(elementToRemove)
 
 				let context = self.fetchedResultsController.managedObjectContext
-				context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
+				context.delete(self.fetchedResultsController.object(at: indexPath) as! NSManagedObject)
 				do {
 					try context.save()
 				} catch let error1 as NSError {
@@ -90,8 +90,8 @@ class PaymentsHistoryViewController: UITableViewController, NSFetchedResultsCont
 		}
 	}
 
-	func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-		if let object = self.detailItem?.getPayments()[indexPath.row] {
+	func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
+		if let object = self.detailItem?.getPayments()[(indexPath as NSIndexPath).row] {
 			cell.textLabel!.text = "\(object.timeStamp)"
 			cell.detailTextLabel!.text = object.member.name
 		}
@@ -106,14 +106,14 @@ class PaymentsHistoryViewController: UITableViewController, NSFetchedResultsCont
 
 		let fetchRequest = NSFetchRequest()
 		// Edit the entity name as appropriate.
-		let entity = NSEntityDescription.entityForName("Event", inManagedObjectContext: self.managedObjectContext!)
+		let entity = NSEntityDescription.entity(forEntityName: "Event", in: self.managedObjectContext!)
 		fetchRequest.entity = entity
 
 		// Set the batch size to a suitable number.
 		fetchRequest.fetchBatchSize = 20
 
 		// Edit the sort key as appropriate.
-		let sortDescriptor = NSSortDescriptor(key: "timeStamp", ascending: false)
+		let sortDescriptor = SortDescriptor(key: "timeStamp", ascending: false)
 
 		fetchRequest.sortDescriptors = [sortDescriptor]
 
@@ -141,39 +141,39 @@ class PaymentsHistoryViewController: UITableViewController, NSFetchedResultsCont
 	}
 	var _fetchedResultsController: NSFetchedResultsController? = nil
 
-	func controllerWillChangeContent(controller: NSFetchedResultsController) {
+	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		self.tableView.beginUpdates()
 	}
 
-	func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
 		switch type {
-		case .Insert:
-			self.tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-		case .Delete:
-			self.tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+		case .insert:
+			self.tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+		case .delete:
+			self.tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
 		default:
 			return
 		}
 	}
 
-	func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: AnyObject, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
 		switch type {
-		case .Insert:
-			tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+		case .insert:
+			tableView.insertRows(at: [newIndexPath!], with: .fade)
 			break
-		case .Delete:
-			tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+		case .delete:
+			tableView.deleteRows(at: [indexPath!], with: .fade)
 			break
-		case .Update:
-			self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
+		case .update:
+			self.configureCell(tableView.cellForRow(at: indexPath!)!, atIndexPath: indexPath!)
 			break
-		case .Move:
-			tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-			tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+		case .move:
+			tableView.deleteRows(at: [indexPath!], with: .fade)
+			tableView.insertRows(at: [newIndexPath!], with: .fade)
 		}
 	}
 
-	func controllerDidChangeContent(controller: NSFetchedResultsController) {
+	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		self.tableView.endUpdates()
 	}
 

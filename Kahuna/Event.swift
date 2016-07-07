@@ -11,7 +11,7 @@ import CoreData
 
 class Event: NSManagedObject {
 
-    @NSManaged var timeStamp: NSDate
+    @NSManaged var timeStamp: Date
     @NSManaged var member: Member
 
 }

@@ -19,14 +19,14 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 		}
 	}
 
-	@IBAction func showHistory(sender: AnyObject) {
-		self.performSegueWithIdentifier("showHistory", sender: nil);
+	@IBAction func showHistory(_ sender: AnyObject) {
+		self.performSegue(withIdentifier: "showHistory", sender: nil);
 	}
 
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+		if UIDevice.current().userInterfaceIdiom == .pad {
 			self.clearsSelectionOnViewWillAppear = false
 			self.preferredContentSize = CGSize(width: 320.0, height: 600.0)
 		}
@@ -35,7 +35,7 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
+		let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: "insertNewObject:")
 		self.navigationItem.rightBarButtonItem = addButton
 	}
 
@@ -48,38 +48,38 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 		// Dispose of any resources that can be recreated.
 	}
 
-	func insertNewObject(sender: AnyObject) {
-		self.performSegueWithIdentifier("addMember", sender: nil)
+	func insertNewObject(_ sender: AnyObject) {
+		self.performSegue(withIdentifier: "addMember", sender: nil)
 	}
 
-	func addMemberToGroup(newMember: Member) {
-		self.dismissViewControllerAnimated(true, completion: nil)
+	func addMemberToGroup(_ newMember: Member) {
+		self.dismiss(animated: true, completion: nil)
 
 		// If appropriate, configure the new managed object.
 		if let group = detailItem {
-			if !group.members.containsObject(newMember) {
+			if !group.members.contains(newMember) {
 				group.addMember(newMember)
 			}
 			else {
 				//TODO: inform user about not adding an existing member
 				//abort()
-				let alertcontroller = UIAlertController(title: "Error", message: "User already exists in group", preferredStyle: .Alert)
-				alertcontroller.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Cancel, handler: nil))
-				self.presentViewController(alertcontroller, animated: true, completion: nil)
+				let alertcontroller = UIAlertController(title: "Error", message: "User already exists in group", preferredStyle: .alert)
+				alertcontroller.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.cancel, handler: nil))
+				self.present(alertcontroller, animated: true, completion: nil)
 				return
 			}
 		}
 
-		let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+		let delegate = UIApplication.shared().delegate as! AppDelegate
 		delegate.saveContext()
 	}
 
 	// MARK: - Segues
 
-	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier == "showDetail" {
 			if let indexPath = self.tableView.indexPathForSelectedRow {
-				let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Group
+				let object = self.fetchedResultsController.object(at: indexPath) as! Group
 				let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
 				controller.detailItem = object
 				controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
@@ -98,61 +98,61 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 		}
 	}
 
-	func incrementPaymentCountForIndexPath(indexPath : NSIndexPath) {
-		if let object = self.detailItem?.getMembers()[indexPath.row] {
+	func incrementPaymentCountForIndexPath(_ indexPath : IndexPath) {
+		if let object = self.detailItem?.getMembers()[(indexPath as NSIndexPath).row] {
 			let context = self.fetchedResultsController.managedObjectContext
-			let newEvent = NSEntityDescription.insertNewObjectForEntityForName("Event", inManagedObjectContext: context) as! Event
+			let newEvent = NSEntityDescription.insertNewObject(forEntityName: "Event", into: context) as! Event
 			newEvent.member = object
-			newEvent.timeStamp = NSDate()
+			newEvent.timeStamp = Date()
 			self.detailItem!.addPayment(newEvent)
 			// Save the context.
-			let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+			let delegate = UIApplication.shared().delegate as! AppDelegate
 			delegate.saveContext()
 		}
 	}
 
 	// MARK: - Table View
 
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 //		return self.fetchedResultsController.sections?.count ?? 0
 	}
 
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //		let sectionInfo = self.fetchedResultsController.sections![section] as NSFetchedResultsSectionInfo
 //		return sectionInfo.numberOfObjects
 		return self.detailItem?.getNumberOfMembers() ?? 0
 	}
 
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as UITableViewCell
 		self.configureCell(cell, atIndexPath: indexPath)
 		return cell
 	}
 
-	override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 		// Return false if you do not want the specified item to be editable.
 		return false//true
 	}
 
-	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-		if editingStyle == .Delete {
+	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+		if editingStyle == .delete {
 			let context = self.fetchedResultsController.managedObjectContext
-			context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
+			context.delete(self.fetchedResultsController.object(at: indexPath) as! NSManagedObject)
 
-			let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+			let delegate = UIApplication.shared().delegate as! AppDelegate
 			delegate.saveContext()
 		}
 	}
 
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		self.incrementPaymentCountForIndexPath(indexPath)
-		self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+		self.tableView.deselectRow(at: indexPath, animated: true)
 		self.tableView.reloadData()
 	}
 
-	func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-		let object = self.detailItem?.getMembers()[indexPath.row] as Member!
+	func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
+		let object = self.detailItem?.getMembers()[(indexPath as NSIndexPath).row] as Member!
 		cell.textLabel!.text = object.name
 		if let payments = self.detailItem?.getPayments() {
 			var paymentsCount = 0
@@ -175,14 +175,14 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 
 		let fetchRequest = NSFetchRequest()
 		// Edit the entity name as appropriate.
-		let entity = NSEntityDescription.entityForName("Member", inManagedObjectContext: self.managedObjectContext!)
+		let entity = NSEntityDescription.entity(forEntityName: "Member", in: self.managedObjectContext!)
 		fetchRequest.entity = entity
 
 		// Set the batch size to a suitable number.
 		fetchRequest.fetchBatchSize = 20
 
 		// Edit the sort key as appropriate.
-		let sortDescriptor = NSSortDescriptor(key: "name", ascending: false)
+		let sortDescriptor = SortDescriptor(key: "name", ascending: false)
 
 		fetchRequest.sortDescriptors = [sortDescriptor]
 
@@ -202,40 +202,40 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 	}
 	var _fetchedResultsController: NSFetchedResultsController? = nil
 
-	func controllerWillChangeContent(controller: NSFetchedResultsController) {
+	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		self.tableView.beginUpdates()
 	}
 
-	func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
 		switch type {
-		case .Insert:
-			self.tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-		case .Delete:
-			self.tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+		case .insert:
+			self.tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+		case .delete:
+			self.tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
 		default:
 			return
 		}
 	}
 
-	func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+	func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: AnyObject, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
 		switch type {
-		case .Insert:
-			tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+		case .insert:
+			tableView.insertRows(at: [newIndexPath!], with: .fade)
 			break
-		case .Delete:
-			tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+		case .delete:
+			tableView.deleteRows(at: [indexPath!], with: .fade)
 			break
-		case .Update:
-			self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
+		case .update:
+			self.configureCell(tableView.cellForRow(at: indexPath!)!, atIndexPath: indexPath!)
 			break
-		case .Move:
-			tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-			tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+		case .move:
+			tableView.deleteRows(at: [indexPath!], with: .fade)
+			tableView.insertRows(at: [newIndexPath!], with: .fade)
 			break
 		}
 	}
 
-	func controllerDidChangeContent(controller: NSFetchedResultsController) {
+	func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		self.tableView.endUpdates()
 	}
 
