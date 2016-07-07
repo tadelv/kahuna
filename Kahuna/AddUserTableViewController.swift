@@ -57,7 +57,7 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 		}
 		alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
 			let textField = alertController.textFields?.first as UITextField!
-			self.insertMemberWithName(textField.text)
+			self.insertMemberWithName(textField?.text)
 		}))
 		alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
 		}))
@@ -130,12 +130,12 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 
 	// MARK: - Fetched results controller
 
-	var fetchedResultsController: NSFetchedResultsController {
+	var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult> {
 		if _fetchedResultsController != nil {
 			return _fetchedResultsController!
 		}
 
-		let fetchRequest = NSFetchRequest()
+		let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
 		// Edit the entity name as appropriate.
 		let entity = NSEntityDescription.entity(forEntityName: "Member", in: self.managedObjectContext!)
 		fetchRequest.entity = entity
@@ -165,7 +165,7 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 
 		return _fetchedResultsController!
 	}
-	var _fetchedResultsController: NSFetchedResultsController? = nil
+	var _fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
 
 	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		self.tableView.beginUpdates()

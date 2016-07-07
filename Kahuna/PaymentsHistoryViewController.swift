@@ -99,12 +99,12 @@ class PaymentsHistoryViewController: UITableViewController, NSFetchedResultsCont
 
 	// MARK: - Fetched results controller
 
-	var fetchedResultsController: NSFetchedResultsController {
+	var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult> {
 		if _fetchedResultsController != nil {
 			return _fetchedResultsController!
 		}
 
-		let fetchRequest = NSFetchRequest()
+		let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
 		// Edit the entity name as appropriate.
 		let entity = NSEntityDescription.entity(forEntityName: "Event", in: self.managedObjectContext!)
 		fetchRequest.entity = entity
@@ -139,7 +139,7 @@ class PaymentsHistoryViewController: UITableViewController, NSFetchedResultsCont
 
 		return _fetchedResultsController!
 	}
-	var _fetchedResultsController: NSFetchedResultsController? = nil
+	var _fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
 
 	func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 		self.tableView.beginUpdates()
