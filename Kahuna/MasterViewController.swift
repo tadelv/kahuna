@@ -28,7 +28,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 		// Do any additional setup after loading the view, typically from a nib.
 		self.navigationItem.leftBarButtonItem = self.editButtonItem()
 
-		let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: "insertNewObject:")
+		let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(MasterViewController.insertNewObject(_:)))
 		self.navigationItem.rightBarButtonItem = addButton
 		if let split = self.splitViewController {
 		    let controllers = split.viewControllers
@@ -50,8 +50,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 		alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
 			switch action.style{
 			case .default:
-				let textField = alertController.textFields?.first as UITextField!
-				self.insertGroupWithName(textField?.text)
+				if let textField = alertController.textFields?.first {
+					self.insertGroupWithName(textField.text)
+				}
 
 			case .cancel:
 				print("cancel")
@@ -63,8 +64,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 		alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
 			switch action.style{
 			case .default:
-				let textField = alertController.textFields?.first as UITextField!
-				self.insertGroupWithName(textField?.text)
+				if let textField = alertController.textFields?.first {
+					self.insertGroupWithName(textField.text)
+				}
 				break
 			case .cancel:
 				print("cancel")

@@ -35,7 +35,7 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: "insertNewObject:")
+		let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(GroupDetailViewController.insertNewObject(_:)))
 		self.navigationItem.rightBarButtonItem = addButton
 	}
 
@@ -72,6 +72,7 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 
 		let delegate = UIApplication.shared().delegate as! AppDelegate
 		delegate.saveContext()
+		self.tableView.reloadData()
 	}
 
 	// MARK: - Segues
