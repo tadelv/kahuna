@@ -68,9 +68,8 @@ class PaymentsHistoryViewController: UITableViewController, NSFetchedResultsCont
 		if editingStyle == .delete {
 			if let elementToRemove = self.detailItem?.getPayments()[(indexPath as NSIndexPath).row] {
 				self.detailItem?.removePayment(elementToRemove)
-
 				let context = self.fetchedResultsController.managedObjectContext
-				context.delete(self.fetchedResultsController.object(at: indexPath) as! NSManagedObject)
+				context.delete(elementToRemove)
 				do {
 					try context.save()
 				} catch let error1 as NSError {
@@ -85,7 +84,6 @@ class PaymentsHistoryViewController: UITableViewController, NSFetchedResultsCont
 					abort()
 
 				}
-				self.tableView.reloadData()
 			}
 		}
 	}
