@@ -7,10 +7,17 @@
 //
 
 import Foundation
-import CoreData
 
-class Member: NSManagedObject {
+class Member {
 
-    @NSManaged var name: String
+    var name: String?
 
+}
+
+func == (left: Member, right: Member) -> Bool {
+	return left.name == right.name
+}
+
+func != (left: Member, right: Member) -> Bool {
+	return !(left == right)
 }

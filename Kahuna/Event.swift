@@ -7,11 +7,14 @@
 //
 
 import Foundation
-import CoreData
 
-class Event: NSManagedObject {
+class Event {
 
-    @NSManaged var timeStamp: Date
-    @NSManaged var member: Member
+	var timeStamp: Date
+	var member: Member?
+
+	init() {
+		self.timeStamp = Date()
+	}
 
 }

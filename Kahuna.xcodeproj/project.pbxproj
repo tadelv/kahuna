@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		180838E21A30899100F05022 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180838E11A30899100F05022 /* AppDelegate.swift */; };
-		180838E51A30899100F05022 /* Kahuna.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 180838E31A30899100F05022 /* Kahuna.xcdatamodeld */; };
 		180838E71A30899100F05022 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180838E61A30899100F05022 /* MasterViewController.swift */; };
 		180838E91A30899100F05022 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 180838E81A30899100F05022 /* DetailViewController.swift */; };
 		180838EC1A30899100F05022 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 180838EA1A30899100F05022 /* Main.storyboard */; };
@@ -39,7 +38,6 @@
 		180838DC1A30899100F05022 /* Kahuna.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kahuna.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		180838E01A30899100F05022 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		180838E11A30899100F05022 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		180838E41A30899100F05022 /* Kahuna.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Kahuna.xcdatamodel; sourceTree = "<group>"; };
 		180838E61A30899100F05022 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		180838E81A30899100F05022 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		180838EB1A30899100F05022 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -114,7 +112,6 @@
 				180838EA1A30899100F05022 /* Main.storyboard */,
 				180838ED1A30899100F05022 /* Images.xcassets */,
 				180838EF1A30899100F05022 /* LaunchScreen.xib */,
-				180838E31A30899100F05022 /* Kahuna.xcdatamodeld */,
 				1808391F1A308E8900F05022 /* Event.swift */,
 				1808391D1A308E8900F05022 /* Group.swift */,
 				1808391B1A308E8900F05022 /* Member.swift */,
@@ -374,7 +371,6 @@
 				180838E21A30899100F05022 /* AppDelegate.swift in Sources */,
 				180839541A30AC2A00F05022 /* AddUserTableViewController.swift in Sources */,
 				180839221A30953800F05022 /* GroupDetailViewController.swift in Sources */,
-				180838E51A30899100F05022 /* Kahuna.xcdatamodeld in Sources */,
 				180838E71A30899100F05022 /* MasterViewController.swift in Sources */,
 				1808391E1A308E8900F05022 /* Group.swift in Sources */,
 				180839561A30B78F00F05022 /* PaymentsHistoryViewController.swift in Sources */,
@@ -614,19 +610,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		180838E31A30899100F05022 /* Kahuna.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				180838E41A30899100F05022 /* Kahuna.xcdatamodel */,
-			);
-			currentVersion = 180838E41A30899100F05022 /* Kahuna.xcdatamodel */;
-			path = Kahuna.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 180838D41A30899100F05022 /* Project object */;
 }

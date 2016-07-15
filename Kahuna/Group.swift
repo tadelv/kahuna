@@ -7,16 +7,24 @@
 //
 
 import Foundation
-import CoreData
 
-class Group: NSManagedObject {
+class Group {
 
-    @NSManaged var name: String
-    @NSManaged var members: NSSet
-    @NSManaged var payments: NSSet
+	var name: String?
+    var members: [Member] = []
+	var payments: [Event] = []
+
+	func contains(_ m:Member) -> Bool {
+		for otherMember in members {
+			if otherMember.name == m.name {
+				return true
+			}
+		}
+		return false
+	}
 
 }
-
+/*
 extension Group {
 
 	func addMember(_ newMember:Member) {
@@ -55,3 +63,4 @@ extension Group {
 	}
 
 }
+*/
