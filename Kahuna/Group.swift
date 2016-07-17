@@ -7,15 +7,27 @@
 //
 
 import Foundation
+import Realm
 
-class Group {
+class Group: RLMObject {
 
 	var name: String?
-    var members: [Member] = []
-	var payments: [Event] = []
+	var members = RLMArray(objectClassName: Member.className())
+    var payments = RLMArray(objectClassName: Event.className())
+	var uuid: NSString?
+
+	override init () {
+		super.init()
+		self.uuid = UUID().uuidString
+	}
+
+	override class func primaryKey() -> String {
+		return "uuid"
+	}
 
 	func contains(_ m:Member) -> Bool {
-		for otherMember in members {
+		for index in 0..<members.count {
+			let otherMember = members[index] as! Member
 			if otherMember.name == m.name {
 				return true
 			}

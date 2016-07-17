@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import Realm
 
-class Member {
+class Member: RLMObject {
 
     var name: String?
 

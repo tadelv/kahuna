@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Realm
 
 class GroupDetailViewController: UITableViewController, AddUserControllerDelegate {
 
@@ -57,7 +58,11 @@ class GroupDetailViewController: UITableViewController, AddUserControllerDelegat
 		// If appropriate, configure the new managed object.
 		if let group = detailItem {
 			if !group.contains(newMember) {
-				group.members.append(newMember)
+				group.members.add(newMember)
+				let realm = RLMRealm.default()
+				realm.beginWriteTransaction()
+				realm.addOrUpdate(group)
+				try! realm.commitWriteTransaction()
 			}
 			else {
 				//TODO: inform user about not adding an existing member
@@ -96,12 +101,25 @@ class GroupDetailViewController: UITableViewController, AddUserControllerDelegat
 	}
 
 	func incrementPaymentCountForIndexPath(_ indexPath : IndexPath) {
-		if let object = self.detailItem?.members[(indexPath as NSIndexPath).row] {
-			let newEvent = Event()
-			newEvent.member = object
-			self.detailItem!.payments.append(newEvent)
-			// TODO: Realm save
+		let index = UInt(indexPath.row)
+		if index < self.detailItem?.members.count {
+			if let object = self.detailItem?.members.object(at: index) as? Member {
+				let newEvent = Event()
+				newEvent.member = object
+				self.detailItem!.payments.add(newEvent)
+				let realm = RLMRealm.default()
+				realm.beginWriteTransaction()
+				realm.addOrUpdateObjects(fromArray: [newEvent, object, self.detailItem!])
+				do {
+					try realm.commitWriteTransaction()
+				} catch let error as RLMError {
+					print("Failed to write: \(error)")
+				} catch let error as Any {
+					print("Failed with \(error)")
+				}
+			}
 		}
+
 	}
 
 	// MARK: - Table View
@@ -111,7 +129,10 @@ class GroupDetailViewController: UITableViewController, AddUserControllerDelegat
 	}
 
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return self.detailItem?.members.count ?? 0
+		if let count = self.detailItem?.members.count {
+			return Int(count)
+		}
+		return 0
 	}
 
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -140,18 +161,11 @@ class GroupDetailViewController: UITableViewController, AddUserControllerDelegat
 	}
 
 	func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
-		if let member = self.detailItem?.members[indexPath.row] {
+		if let member = self.detailItem?.members[UInt(indexPath.row)] as? Member {
 			cell.textLabel!.text = member.name
-			if let payments = self.detailItem?.payments {
-				var paymentsCount = 0
-				for pEvent in payments {
-					if let m = pEvent.member {
-						if m == member {
-							paymentsCount += 1
-						}
-					}
-				}
-				cell.detailTextLabel!.text = "\(paymentsCount)"
+			let predicate = Predicate(format: "member.name == \(member.name)", argumentArray: nil)
+			if let payments = self.detailItem?.payments.objects(with: predicate) {
+				cell.detailTextLabel!.text = "\(payments.count)"
 			}
 		}
 

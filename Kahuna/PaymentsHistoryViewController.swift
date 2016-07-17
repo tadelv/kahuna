@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Realm
 
 class PaymentsHistoryViewController: UITableViewController {
 
@@ -67,9 +68,16 @@ class PaymentsHistoryViewController: UITableViewController {
 	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 		if editingStyle == .delete {
 			// TODO: Perform Realm remove element
-			let paymentToRemove = self.detailItem!.payments.remove(at: indexPath.row)
-			
-			abort()
+			let realm = RLMRealm.default()
+			realm.beginWriteTransaction()
+			self.detailItem!.payments.removeObject(at: UInt(indexPath.row))
+			realm.addOrUpdate(self.detailItem!)
+			do {
+				try realm.commitWriteTransaction()
+			}
+			catch {
+				print("Failed to commit realm transaction: \(error)")
+			}
 		}
 	}
 
