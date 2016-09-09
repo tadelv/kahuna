@@ -35,7 +35,7 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
+		let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(GroupDetailViewController.insertNewObject(_:)))
 		self.navigationItem.rightBarButtonItem = addButton
 	}
 
@@ -158,7 +158,7 @@ class GroupDetailViewController: UITableViewController, NSFetchedResultsControll
 			var paymentsCount = 0
 			for pEvent in payments {
 				if pEvent.member == object {
-					paymentsCount++
+					paymentsCount += 1
 				}
 			}
 			cell.detailTextLabel!.text = "\(paymentsCount)"

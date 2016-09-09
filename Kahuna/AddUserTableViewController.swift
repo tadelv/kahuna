@@ -30,10 +30,10 @@ class AddUserTableViewController: UITableViewController, NSFetchedResultsControl
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
-		let cancelButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "dismiss:")
+		let cancelButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(AddUserTableViewController.dismiss(_:)))
 		self.navigationItem.leftBarButtonItem = cancelButtonItem
 
-		let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
+		let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(AddUserTableViewController.insertNewObject(_:)))
 		self.navigationItem.rightBarButtonItem = addButton
 	}
 
