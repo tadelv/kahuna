@@ -7,51 +7,17 @@
 //
 
 import Foundation
-import CoreData
+import RealmSwift
 
-class Group: NSManagedObject {
+class Group: Object {
 
-    @NSManaged var name: String
-    @NSManaged var members: NSSet
-    @NSManaged var payments: NSSet
+    dynamic var name: String = ""
+    let members = List<Member>()
+    let payments = List<Event>()
 
-}
-
-extension Group {
-
-	func addMember(newMember:Member) {
-		let teamz = self.mutableSetValueForKey("members")
-		teamz.addObject(newMember)
-	}
-
-	func getNumberOfMembers() -> Int {
-		return self.members.count;
-	}
-
-	func getMembers() -> [Member] {
-		var tmpsak: [Member]
-		tmpsak = self.members.allObjects as! [Member]
-		return tmpsak
-	}
-
-	func addPayment(newPayment:Event) {
-		let teamz = self.mutableSetValueForKey("payments")
-		teamz.addObject(newPayment)
-	}
-
-	func removePayment(payment: Event) {
-		let teamz = self.mutableSetValueForKey("payments")
-		teamz.removeObject(payment)
-	}
-
-	func getNumberOfPayments() -> Int {
-		return self.payments.count;
-	}
-
-	func getPayments() -> [Event] {
-		var tmpsak: [Event]
-		tmpsak = self.payments.allObjects as! [Event]
-		return tmpsak
+	convenience init(name: String) {
+		self.init()
+		self.name = name
 	}
 
 }

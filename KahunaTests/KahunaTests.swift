@@ -8,6 +8,7 @@
 
 import UIKit
 import XCTest
+import RealmSwift
 
 class KahunaTests: XCTestCase {
     
@@ -32,5 +33,21 @@ class KahunaTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
+
+	func testNewMemberWorks() {
+		let member = Member(name: "Frieda")
+		let group = Group(name: "Assistants")
+
+
+		let realm = try! Realm()
+		do {
+			try realm.write {
+				group.members.append(member)
+			}
+		} catch let error {
+			XCTAssert(false, "\(error)")
+		}
+
+	}
     
 }

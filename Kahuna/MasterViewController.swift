@@ -7,12 +7,13 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
-class MasterViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+class MasterViewController: UITableViewController {
 
 	var detailViewController: GroupDetailViewController? = nil
-	var managedObjectContext: NSManagedObjectContext? = nil
+	var notificationToken: NotificationToken?
+	let realm = try! Realm()
 
 
 	override func awakeFromNib() {
@@ -35,6 +36,40 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 			print("I have \(controllers)")
 //		    self.detailViewController = controllers[controllers.count-1].topViewController as! GroupDetailViewController
 		}
+
+		let results = realm.objects(Group.self)
+
+		// Observe Results Notifications
+		notificationToken = results.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
+			guard let tableView = self?.tableView else { return }
+			switch changes {
+			case .Initial:
+				// Results are now populated and can be accessed without blocking the UI
+				tableView.reloadData()
+				break
+			case .Update(_, let deletions, let insertions, let modifications):
+				// Query results have changed, so apply them to the UITableView
+				tableView.beginUpdates()
+				tableView.insertRowsAtIndexPaths(insertions.map { NSIndexPath(forRow: $0, inSection: 0) },
+					withRowAnimation: .Automatic)
+				tableView.deleteRowsAtIndexPaths(deletions.map { NSIndexPath(forRow: $0, inSection: 0) },
+					withRowAnimation: .Automatic)
+				tableView.reloadRowsAtIndexPaths(modifications.map { NSIndexPath(forRow: $0, inSection: 0) },
+					withRowAnimation: .Automatic)
+				tableView.endUpdates()
+				break
+			case .Error(let error):
+				// An error occurred while opening the Realm file on the background worker thread
+				fatalError("\(error)")
+				break
+			}
+		}
+
+		self.tableView.reloadData()
+	}
+
+	deinit {
+		notificationToken?.stop()
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -78,27 +113,29 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 	}
 
 	func insertGroupWithName(newName: String!) {
-		let context = self.fetchedResultsController.managedObjectContext
-		let entity = self.fetchedResultsController.fetchRequest.entity!
-		let newManagedObject = NSEntityDescription.insertNewObjectForEntityForName(entity.name!, inManagedObjectContext: context) as! Group
+		let group = Group(name: newName)
+		do {
+			try realm.write {
+				realm.add(group)
 
-		// If appropriate, configure the new managed object.
-		newManagedObject.name = newName
-		let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
-		delegate.saveContext()
+			}
+		}
+		catch let error {
+			print("failed to add group \(group.name): \(error)")
+		}
 	}
 
 	// MARK: - Segues
 
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier == "showDetail" {
+			let results = realm.objects(Group)
 		    if let indexPath = self.tableView.indexPathForSelectedRow {
-		    let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Group
+				let group = results[indexPath.row]
 		        let controller = segue.destinationViewController as! GroupDetailViewController
-		        controller.detailItem = object
+		        controller.detailItem = group
 		        controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
 		        controller.navigationItem.leftItemsSupplementBackButton = true
-				controller.managedObjectContext = self.managedObjectContext
 		    }
 		}
 	}
@@ -106,12 +143,12 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 	// MARK: - Table View
 
 	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-		return self.fetchedResultsController.sections?.count ?? 0
+		return realm.objects(Group).count > 0 ? 1 : 0
 	}
 
 	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		let sectionInfo = self.fetchedResultsController.sections![section] as NSFetchedResultsSectionInfo
-		return sectionInfo.numberOfObjects
+		let results = realm.objects(Group)
+		return results.count
 	}
 
 	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -127,103 +164,21 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
 	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
 		if editingStyle == .Delete {
-		    let context = self.fetchedResultsController.managedObjectContext
-		    context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
-
-			let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
-			delegate.saveContext()
+		    let group = realm.objects(Group)[indexPath.row]
+			do {
+				try realm.write({ 
+					realm.delete(group)
+				})
+			} catch let error {
+				print("failed to delete group \(group): \(error)")
+			}
 
 		}
 	}
 
 	func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-		let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as! Group
+		let object = realm.objects(Group)[indexPath.row]
 		cell.textLabel!.text = object.name
 	}
-
-	// MARK: - Fetched results controller
-
-	var fetchedResultsController: NSFetchedResultsController {
-	    if _fetchedResultsController != nil {
-	        return _fetchedResultsController!
-	    }
-	    
-	    let fetchRequest = NSFetchRequest()
-	    // Edit the entity name as appropriate.
-	    let entity = NSEntityDescription.entityForName("Group", inManagedObjectContext: self.managedObjectContext!)
-	    fetchRequest.entity = entity
-	    
-	    // Set the batch size to a suitable number.
-	    fetchRequest.fetchBatchSize = 20
-	    
-	    // Edit the sort key as appropriate.
-	    let sortDescriptor = NSSortDescriptor(key: "name", ascending: false)
-	    
-	    fetchRequest.sortDescriptors = [sortDescriptor]
-	    
-	    // Edit the section name key path and cache name if appropriate.
-	    // nil for section name key path means "no sections".
-	    let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: "Master")
-	    aFetchedResultsController.delegate = self
-	    _fetchedResultsController = aFetchedResultsController
-
-		do {
-			try _fetchedResultsController!.performFetch()
-		} catch _ as NSError {
-		     // Replace this implementation with code to handle the error appropriately.
-		     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-	         //println("Unresolved error \(error), \(error.userInfo)")
-		     abort()
-		}
-	    
-	    return _fetchedResultsController!
-	}    
-	var _fetchedResultsController: NSFetchedResultsController? = nil
-
-	func controllerWillChangeContent(controller: NSFetchedResultsController) {
-	    self.tableView.beginUpdates()
-	}
-
-	func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-	    switch type {
-	        case .Insert:
-	            self.tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-	        case .Delete:
-	            self.tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-	        default:
-	            return
-	    }
-	}
-
-	func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-	    switch type {
-	        case .Insert:
-	            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-			break
-	        case .Delete:
-	            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-			break
-	        case .Update:
-	            self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
-			break
-	        case .Move:
-	            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-	            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-	    }
-	}
-
-	func controllerDidChangeContent(controller: NSFetchedResultsController) {
-	    self.tableView.endUpdates()
-	}
-
-	/*
-	 // Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed.
-	 
-	 func controllerDidChangeContent(controller: NSFetchedResultsController) {
-	     // In the simplest, most efficient, case, reload the table view.
-	     self.tableView.reloadData()
-	 }
-	 */
-
 }
 

@@ -7,11 +7,16 @@
 //
 
 import Foundation
-import CoreData
+import RealmSwift
 
-class Event: NSManagedObject {
+class Event : Object {
 
-    @NSManaged var timeStamp: NSDate
-    @NSManaged var member: Member
+    dynamic var timeStamp: NSDate = NSDate()
+    dynamic var member: Member?
+
+	convenience init(member: Member) {
+		self.init()
+		self.member = member
+	}
 
 }

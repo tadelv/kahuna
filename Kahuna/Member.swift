@@ -7,10 +7,15 @@
 //
 
 import Foundation
-import CoreData
+import RealmSwift
 
-class Member: NSManagedObject {
+class Member: Object {
 
-    @NSManaged var name: String
+    dynamic var name = ""
+
+	convenience init(name: String) {
+		self.init()
+		self.name = name
+	}
 
 }
