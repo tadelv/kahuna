@@ -14,11 +14,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 	var window: UIWindow?
 
 
-	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+	private func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 		// Override point for customization after application launch.
 		let splitViewController = self.window!.rootViewController as! UISplitViewController
 		let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
-		navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
+		navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
 		splitViewController.delegate = self
 
 		return true
@@ -64,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
 	lazy var applicationDocumentsDirectory: URL = {
 	    // The directory the application uses to store the Core Data store file. This code uses a directory named "tadel.net.Kahuna" in the application's documents Application Support directory.
-	    let urls = FileManager.default().urlsForDirectory(.documentDirectory, inDomains: .userDomainMask)
+		let urls = FileManager.default.urls(for:.documentDirectory, in: .userDomainMask)
 	    return urls[urls.count-1] as URL
 	}()
 

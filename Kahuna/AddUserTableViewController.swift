@@ -21,7 +21,7 @@ class AddUserTableViewController: UITableViewController {
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		if UIDevice.current().userInterfaceIdiom == .pad {
+		if UIDevice.current.userInterfaceIdiom == .pad {
 			self.clearsSelectionOnViewWillAppear = false
 			self.preferredContentSize = CGSize(width: 320.0, height: 600.0)
 		}
@@ -73,7 +73,7 @@ class AddUserTableViewController: UITableViewController {
 
 	// MARK: - Segues
 
-	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 
 	}
 

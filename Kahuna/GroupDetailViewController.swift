@@ -25,7 +25,7 @@ class GroupDetailViewController: UITableViewController, AddUserControllerDelegat
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		if UIDevice.current().userInterfaceIdiom == .pad {
+		if UIDevice.current.userInterfaceIdiom == .pad {
 			self.clearsSelectionOnViewWillAppear = false
 			self.preferredContentSize = CGSize(width: 320.0, height: 600.0)
 		}
@@ -79,30 +79,29 @@ class GroupDetailViewController: UITableViewController, AddUserControllerDelegat
 	}
 
 	// MARK: - Segues
-
-	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier == "showDetail" {
 			if let _ = self.tableView.indexPathForSelectedRow {
 				// FIXME: what is this? Remove from storyboard or reorganize
-				let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
+				let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
 				controller.detailItem = self.detailItem
-				controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+				controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
 				controller.navigationItem.leftItemsSupplementBackButton = true
 			}
 		}
 		if segue.identifier == "addMember" {
-			let controller = (segue.destinationViewController as! UINavigationController).topViewController as! AddUserTableViewController
+			let controller = (segue.destination as! UINavigationController).topViewController as! AddUserTableViewController
 			controller.delegate = self
 		}
 		if segue.identifier == "showHistory" {
-			let controller = segue.destinationViewController as! PaymentsHistoryViewController
+			let controller = segue.destination as! PaymentsHistoryViewController
 			controller.detailItem = self.detailItem
 		}
 	}
 
 	func incrementPaymentCountForIndexPath(_ indexPath : IndexPath) {
 		let index = UInt(indexPath.row)
-		if index < self.detailItem?.members.count {
+		if index < self.detailItem!.members.count {
 			if let object = self.detailItem?.members.object(at: index) as? Member {
 				let newEvent = Event()
 				newEvent.member = object
@@ -163,7 +162,7 @@ class GroupDetailViewController: UITableViewController, AddUserControllerDelegat
 	func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
 		if let member = self.detailItem?.members[UInt(indexPath.row)] as? Member {
 			cell.textLabel!.text = member.name
-			let predicate = Predicate(format: "member.name == \(member.name)", argumentArray: nil)
+			let predicate = NSPredicate(format: "member.name == \(member.name)", argumentArray: nil)
 			if let payments = self.detailItem?.payments.objects(with: predicate) {
 				cell.detailTextLabel!.text = "\(payments.count)"
 			}

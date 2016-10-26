@@ -23,7 +23,7 @@ class PaymentsHistoryViewController: UITableViewController {
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		if UIDevice.current().userInterfaceIdiom == .pad {
+		if UIDevice.current.userInterfaceIdiom == .pad {
 			self.clearsSelectionOnViewWillAppear = false
 			self.preferredContentSize = CGSize(width: 320.0, height: 600.0)
 		}
@@ -32,7 +32,7 @@ class PaymentsHistoryViewController: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
-		self.navigationItem.rightBarButtonItem = self.editButtonItem()
+		self.navigationItem.rightBarButtonItem = self.editButtonItem
 	}
 
 	func configureView() {

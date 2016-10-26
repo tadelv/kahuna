@@ -16,7 +16,7 @@ class MasterViewController: UITableViewController {
 
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		if UIDevice.current().userInterfaceIdiom == .pad {
+		if UIDevice.current.userInterfaceIdiom == .pad {
 		    self.clearsSelectionOnViewWillAppear = false
 		    self.preferredContentSize = CGSize(width: 320.0, height: 600.0)
 		}
@@ -25,7 +25,7 @@ class MasterViewController: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
-		self.navigationItem.leftBarButtonItem = self.editButtonItem()
+		self.navigationItem.leftBarButtonItem = self.editButtonItem
 
 		let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(MasterViewController.insertNewObject(_:)))
 		self.navigationItem.rightBarButtonItem = addButton
@@ -86,13 +86,13 @@ class MasterViewController: UITableViewController {
 
 	// MARK: - Segues
 
-	override func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
+	func prepare(for segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier == "showDetail" {
 		    if let indexPath = self.tableView.indexPathForSelectedRow {
 				let object = self.groups[indexPath.row]
-		        let controller = segue.destinationViewController as! GroupDetailViewController
+		        let controller = segue.destination as! GroupDetailViewController
 		        controller.detailItem = object
-		        controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
+		        controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
 		        controller.navigationItem.leftItemsSupplementBackButton = true
 		    }
 		}

@@ -6,7 +6,7 @@ target 'Kahuna' do
   use_frameworks!
 
   # Pods for Kahuna
-  pod 'Realm'
+  pod 'RealmSwift'
   target 'KahunaTests' do
     inherit! :search_paths
     # Pods for testing

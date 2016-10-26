@@ -18,7 +18,7 @@ class Group: RLMObject {
 
 	override init () {
 		super.init()
-		self.uuid = UUID().uuidString
+		self.uuid = UUID().uuidString as NSString?
 	}
 
 	override class func primaryKey() -> String {
