@@ -18,4 +18,6 @@ class Member: Object {
 		self.name = name
 	}
 
+	override class func primaryKey() -> String? { return "name" }
+
 }

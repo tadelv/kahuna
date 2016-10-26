@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class GroupDetailViewController: UITableViewController, AddUserControllerDelegate {
 
@@ -16,6 +17,9 @@ class GroupDetailViewController: UITableViewController, AddUserControllerDelegat
 			self.configureView()
 		}
 	}
+
+	var notificationToken: NotificationToken?
+	let realm = try! Realm()
 
 	@IBAction func showHistory(sender: AnyObject) {
 		self.performSegueWithIdentifier("showHistory", sender: nil);
@@ -37,8 +41,37 @@ class GroupDetailViewController: UITableViewController, AddUserControllerDelegat
 		self.navigationItem.rightBarButtonItem = addButton
 	}
 
+	deinit {
+		notificationToken?.stop()
+	}
+
 	func configureView() {
         self.title = self.detailItem!.name
+
+		notificationToken = self.detailItem?.members.addNotificationBlock {  [weak self] (changes: RealmCollectionChange) in
+			guard let tableView = self?.tableView else {return}
+			switch changes {
+			case .Initial:
+				// Results are now populated and can be accessed without blocking the UI
+				tableView.reloadData()
+				break
+			case .Update(_, let deletions, let insertions, let modifications):
+				// Query results have changed, so apply them to the UITableView
+				tableView.beginUpdates()
+				tableView.insertRowsAtIndexPaths(insertions.map { NSIndexPath(forRow: $0, inSection: 0) },
+					withRowAnimation: .Automatic)
+				tableView.deleteRowsAtIndexPaths(deletions.map { NSIndexPath(forRow: $0, inSection: 0) },
+					withRowAnimation: .Automatic)
+				tableView.reloadRowsAtIndexPaths(modifications.map { NSIndexPath(forRow: $0, inSection: 0) },
+					withRowAnimation: .Automatic)
+				tableView.endUpdates()
+				break
+			case .Error(let error):
+				// An error occurred while opening the Realm file on the background worker thread
+				fatalError("\(error)")
+				break
+			}
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -56,7 +89,16 @@ class GroupDetailViewController: UITableViewController, AddUserControllerDelegat
 		// If appropriate, configure the new managed object.
 		if let group = detailItem {
 			if !group.members.contains(newMember) {
-				group.members.append(newMember)
+				do {
+					group.members.realm!.beginWrite()
+					group.members.realm!.add(newMember, update: true)
+					group.members.append(newMember)
+					try group.members.realm!.commitWrite()
+				}
+				catch let error {
+					print("Failed to add user \(error)")
+				}
+
 			}
 			else {
 				//TODO: inform user about not adding an existing member
