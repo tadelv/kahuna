@@ -15,11 +15,12 @@ class GroupDetailViewController: UITableViewController, AddUserControllerDelegat
 		didSet {
 			// Update the view.
 			self.configureView()
+			self.realm = (detailItem?.realm)!
 		}
 	}
 
 	var notificationToken: NotificationToken?
-	let realm = try! Realm()
+	var realm = try! Realm()
 
 	@IBAction func showHistory(sender: AnyObject) {
 		self.performSegueWithIdentifier("showHistory", sender: nil);
@@ -91,8 +92,9 @@ class GroupDetailViewController: UITableViewController, AddUserControllerDelegat
 			if !group.members.contains(newMember) {
 				do {
 					group.members.realm!.beginWrite()
-					group.members.realm!.add(newMember, update: true)
-					group.members.append(newMember)
+					let newNewMember = group.members.realm!.create(Member.self, value: newMember, update: true)
+//					group.members.realm!.add(newMember, update: true)
+					group.members.append(newNewMember)
 					try group.members.realm!.commitWrite()
 				}
 				catch let error {
@@ -135,8 +137,12 @@ class GroupDetailViewController: UITableViewController, AddUserControllerDelegat
 
 	func incrementPaymentCountForIndexPath(indexPath : NSIndexPath) {
 		if let payingMember = self.detailItem?.members[indexPath.row] {
-			let newEvent = Event(member: payingMember)
-			self.detailItem!.payments.append(newEvent)
+			try! realm.write({
+				let newEvent = realm.create(Event.self, value: ["member" : payingMember], update: true)
+//				realm.add(newEvent)
+				self.detailItem!.payments.append(newEvent)
+			})
+
 		}
 	}
 

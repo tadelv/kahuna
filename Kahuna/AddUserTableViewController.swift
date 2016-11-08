@@ -15,7 +15,8 @@ protocol AddUserControllerDelegate {
 
 class AddUserTableViewController: UITableViewController {
 
-	let realm = try! Realm()
+	let realm =  try! Realm()
+	var notificationToken: NotificationToken?
 	var delegate: AddUserControllerDelegate? = nil
 
 
@@ -35,19 +36,20 @@ class AddUserTableViewController: UITableViewController {
 
 		let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(AddUserTableViewController.insertNewObject(_:)))
 		self.navigationItem.rightBarButtonItem = addButton
+
+		let users = realm.objects(Member.self)
+		notificationToken = users.addNotificationBlock({ [weak self] (changes: RealmCollectionChange) in
+			guard let tableView = self?.tableView else { return }
+			tableView.reloadData()
+		})
 	}
 
-	func configureView() {
-
+	deinit {
+		notificationToken?.stop()
 	}
 
 	func dismiss(sender: AnyObject) {
 		self.dismissViewControllerAnimated(true, completion: nil)
-	}
-
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
 	}
 
 	func insertNewObject(sender: AnyObject) {
@@ -86,7 +88,7 @@ class AddUserTableViewController: UITableViewController {
 	// MARK: - Table View
 
 	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-		return self.realm.objects(Member).count ?? 0
+		return self.realm.objects(Member).count > 0 ?  1 : 0
 	}
 
 	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -107,13 +109,15 @@ class AddUserTableViewController: UITableViewController {
 
 	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
 		if editingStyle == .Delete {
-//			TODO: realm delete member
-//			let context = self.fetchedResultsController.managedObjectContext
-//			context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as! NSManagedObject)
-//
-//			// Save
-//			let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//			delegate.saveContext()
+			// TOOD: what happens to all the payments of this member?
+			let member = realm.objects(Member)[indexPath.row]
+			do {
+				try realm.write({
+					realm.delete(member)
+				})
+			} catch let error {
+				print("failed to delete member \(member): \(error)")
+			}
 		}
 	}
 

@@ -42,27 +42,30 @@ class MasterViewController: UITableViewController {
 		// Observe Results Notifications
 		notificationToken = results.addNotificationBlock { [weak self] (changes: RealmCollectionChange) in
 			guard let tableView = self?.tableView else { return }
-			switch changes {
-			case .Initial:
-				// Results are now populated and can be accessed without blocking the UI
-				tableView.reloadData()
-				break
-			case .Update(_, let deletions, let insertions, let modifications):
-				// Query results have changed, so apply them to the UITableView
-				tableView.beginUpdates()
-				tableView.insertRowsAtIndexPaths(insertions.map { NSIndexPath(forRow: $0, inSection: 0) },
-					withRowAnimation: .Automatic)
-				tableView.deleteRowsAtIndexPaths(deletions.map { NSIndexPath(forRow: $0, inSection: 0) },
-					withRowAnimation: .Automatic)
-				tableView.reloadRowsAtIndexPaths(modifications.map { NSIndexPath(forRow: $0, inSection: 0) },
-					withRowAnimation: .Automatic)
-				tableView.endUpdates()
-				break
-			case .Error(let error):
-				// An error occurred while opening the Realm file on the background worker thread
-				fatalError("\(error)")
-				break
-			}
+
+//			switch changes {
+//			case .Initial:
+//				// Results are now populated and can be accessed without blocking the UI
+//				tableView.reloadData()
+//				break
+//			case .Update(_, let deletions, let insertions, let modifications):
+//				// Query results have changed, so apply them to the UITableView
+//				tableView.beginUpdates()
+//				tableView.insertRowsAtIndexPaths(insertions.map { NSIndexPath(forRow: $0, inSection: 0) },
+//					withRowAnimation: .Automatic)
+//				tableView.deleteRowsAtIndexPaths(deletions.map { NSIndexPath(forRow: $0, inSection: 0) },
+//					withRowAnimation: .Automatic)
+//				tableView.reloadRowsAtIndexPaths(modifications.map { NSIndexPath(forRow: $0, inSection: 0) },
+//					withRowAnimation: .Automatic)
+//				tableView.endUpdates()
+//				break
+//			case .Error(let error):
+//				// An error occurred while opening the Realm file on the background worker thread
+//				fatalError("\(error)")
+//				break
+//			}
+			tableView.reloadData()
+
 		}
 
 		self.tableView.reloadData()

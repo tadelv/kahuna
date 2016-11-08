@@ -8,7 +8,6 @@
 
 import UIKit
 import RealmSwift
-import Realm
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
@@ -24,10 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 		realmPath.appendContentsOf("/Kahuna")
 		let fileManager = NSFileManager.defaultManager()
 		try! fileManager.createDirectoryAtPath(realmPath, withIntermediateDirectories: true, attributes: nil)
-		let configuration = RLMRealmConfiguration.defaultConfiguration()
-		configuration.fileURL = NSURL.fileURLWithPath(realmPath.stringByAppendingString("/kahuna.rlm"))
-
-		RLMRealmConfiguration.setDefaultConfiguration(configuration)
+		var defaultConfig = Realm.Configuration.defaultConfiguration
+//		let configuration = RLMRealmConfiguration.defaultConfiguration()
+		defaultConfig.fileURL = NSURL.fileURLWithPath(realmPath.stringByAppendingString("/kahuna.rlm"))
+		Realm.Configuration.defaultConfiguration = defaultConfig
 
 
 		let splitViewController = self.window!.rootViewController as! UISplitViewController
@@ -35,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 		navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
 		splitViewController.delegate = self
 
-		let realm = try! Realm()
+		let realm =  try! Realm()
 		print("\(realm.configuration.fileURL!)")
 
 		return true
